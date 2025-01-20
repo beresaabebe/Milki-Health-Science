@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:title="@string/home"
+        android:icon="@drawable/baseline_home_24"/>
+
+    <item
+        android:id="@+id/services"
+        android:title="@string/services"
+        android:icon="@drawable/baseline_medical_services_24"/>
+
+    <item
+        android:id="@+id/blog"
+        android:title="@string/blog"
+        android:icon="@drawable/baseline_edit_24"/>
+
+    <item
+        android:id="@+id/contact_us"
+        android:title="@string/contactus"
+        android:icon="@drawable/baseline_contact_phone_24"/>
+
+    <item
+        android:id="@+id/about_us"
+        android:title="@string/about_us"
+        android:icon="@drawable/baseline_person_24"/>
+
+</menu>

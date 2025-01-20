@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Milki Health science</string>
+    <string name="home">Home</string>
+    <string name="services">Services</string>
+    <string name="blog">Blog</string>
+    <string name="newsletter">Newsletter</string>
+    <string name="contactus">Contact us</string>
+    <string name="gallery">Gallery</string>
+    <string name="about_us">About us</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
