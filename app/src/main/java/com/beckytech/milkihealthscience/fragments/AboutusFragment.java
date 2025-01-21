@@ -1,6 +1,7 @@
 package com.beckytech.milkihealthscience.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -54,15 +55,18 @@ public class AboutusFragment extends Fragment {
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
-                homeWebView.loadUrl("https://milkihealthscience.com/errors");
+                Toast.makeText(requireContext(), "Error loading page: " + error.getDescription(), Toast.LENGTH_SHORT).show();
                 super.onReceivedError(view, request, error);
             }
 
+            @SuppressLint("WebViewClientOnReceivedSslError")
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                super.onReceivedSslError(view, handler, error);
-                handler.cancel();
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
+                builder.setMessage(R.string.ssl_error_message) // Provide a user-friendly message in strings.xml
+                        .setPositiveButton(R.string.proceed, (dialog, which) -> handler.proceed())
+                        .setNegativeButton(R.string.cancel, (dialog, which) -> handler.cancel());
+                builder.create().show();
             }
 
             @Override
@@ -83,7 +87,7 @@ public class AboutusFragment extends Fragment {
             new Handler().postDelayed(() -> {
                 swipeRefreshLayout.setRefreshing(false);
                 homeWebView.loadUrl("https://milkihealthscience.com/about/");
-            }, 3000);
+            }, 1500);
         });
 
         swipeRefreshLayout.setColorSchemeColors(
@@ -92,8 +96,10 @@ public class AboutusFragment extends Fragment {
                 getResources().getColor(android.R.color.holo_green_dark, requireContext().getTheme()),
                 getResources().getColor(android.R.color.holo_red_dark, requireContext().getTheme())
         );
+
         if (savedInstanceState != null)
             homeWebView.restoreState(savedInstanceState);
+
         OnBackPressedCallback callback = new OnBackPressedCallback(true) {
             @Override
             public void handleOnBackPressed() {

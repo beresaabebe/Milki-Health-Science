@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -56,15 +57,18 @@ public class HomeFragment extends Fragment {
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
-                homeWebView.loadUrl("https://milkihealthscience.com/errors");
+                Toast.makeText(requireActivity(), "Error Loading Page"+ error.getDescription(), Toast.LENGTH_SHORT).show();
                 super.onReceivedError(view, request, error);
             }
 
+            @SuppressLint("WebViewClientOnReceivedSslError")
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                super.onReceivedSslError(view, handler, error);
-                handler.cancel();
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setMessage(R.string.ssl_error_message)
+                        .setNegativeButton(R.string.cancel, (dialog, which) -> handler.cancel())
+                        .setPositiveButton(R.string.proceed, (dialog, which) -> handler.proceed())
+                        .create().show();
             }
 
             @Override

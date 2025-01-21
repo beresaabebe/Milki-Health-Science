@@ -7,6 +7,7 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -54,15 +55,18 @@ public class ContactFragment extends Fragment {
 
             @Override
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_SHORT).show();
-                homeWebView.loadUrl("https://milkihealthscience.com/errors");
+                Toast.makeText(requireActivity(), "Error loading page "+ error.getDescription(), Toast.LENGTH_SHORT).show();
                 super.onReceivedError(view, request, error);
             }
 
+            @SuppressLint("WebViewClientOnReceivedSslError")
             @Override
             public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
-                super.onReceivedSslError(view, handler, error);
-                handler.cancel();
+                AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+                builder.setMessage(R.string.ssl_error_message)
+                        .setPositiveButton(R.string.proceed, (dialog, which) -> handler.proceed())
+                        .setNegativeButton(R.string.cancel, (dialog, which) -> handler.cancel())
+                        .create().show();
             }
 
             @Override
@@ -83,7 +87,7 @@ public class ContactFragment extends Fragment {
             new Handler().postDelayed(() -> {
                 swipeRefreshLayout.setRefreshing(false);
                 homeWebView.loadUrl("https://milkihealthscience.com/45-2/");
-            }, 3000);
+            }, 1500);
         });
 
         swipeRefreshLayout.setColorSchemeColors(
